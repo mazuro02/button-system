@@ -1,0 +1,36 @@
+const palavrasDoFormulario = [
+    'javascript', 'html', 'css', 'programação', 'web', 'javascript', 'html',
+    'desenvolvimento', 'web', 'frontend', 'javascript', 'html', 'css', 'desenvolvimento'
+];
+const contagemDePalavras = palavrasDoFormulario.reduce((acumulador, palavra) => {
+    const palavraMin = palavra.toLowerCase();
+    acumulador[palavraMin] = (acumulador[palavraMin] || 0) + 1;
+    return acumulador;
+}, {});
+
+const limiteDeFrequencia = 2;
+const palavrasFrequentes = [];
+const palavrasPoucoFrequentes = [];
+
+for (const palavra in contagemDePalavras) {
+    if (contagemDePalavras[palavra] >= limiteDeFrequencia) {
+        palavrasFrequentes.push({ palavra: palavra, contagem: contagemDePalavras[palavra] });
+    } else {
+        palavrasPoucoFrequentes.push({ palavra: palavra, contagem: contagemDePalavras[palavra] });
+    }
+}
+function exibirPalavrasNaLista(listaDePalavras, idDaLista) {
+    const listaHTML = document.getElementById(idDaLista);
+
+    // Limpa a lista antes de adicionar os novos itens (útil se o script for executado mais de uma vez)
+    listaHTML.innerHTML = '';
+
+    // Cria e adiciona um <li> para cada palavra
+    listaDePalavras.forEach(item => {
+        const novoItem = document.createElement('li');
+        novoItem.textContent = `${item.palavra} (${item.contagem}x)`;
+        listaHTML.appendChild(novoItem);
+    });
+}
+exibirPalavrasNaLista(palavrasFrequentes, 'lista-frequentes');
+exibirPalavrasNaLista(palavrasPoucoFrequentes, 'lista-pouco-frequentes');
